@@ -46,8 +46,8 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
         
         if  let firstItem = tabModel.items.first {
             tabViewModel = tabModel
-            collectionViewController.pageViewController = TabViewPage(transitionStyle: tabModel.tabLayout.transitionStyle, navigationOrientation: .horizontal, options: nil)
-            guard let pageViewController: TabViewPage = collectionViewController.pageViewController else {
+            collectionViewController.pageViewController = UIPageViewController(transitionStyle: tabModel.tabLayout.transitionStyle, navigationOrientation: .horizontal, options: nil)
+            guard let pageViewController: UIPageViewController = collectionViewController.pageViewController else {
                 return
             }
             pageViewController.delegate = self
@@ -105,7 +105,6 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
             index > -1 else {
                 return nil
         }
-        (pageViewController as? TabViewPage)?.currentIndexPage = index
         return tabViewModel.items[index].tabViewController
     }
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {

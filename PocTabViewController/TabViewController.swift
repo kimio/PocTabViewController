@@ -8,10 +8,6 @@
 
 import UIKit
 
-class TabViewPage: UIPageViewController {
-    var currentIndexPage: Int = 0
-}
-
 class TabViewHeader: UICollectionReusableView {
     
     private lazy var tabModel: [TabModel]? = nil
@@ -76,7 +72,7 @@ class TabViewController: UICollectionViewController, UICollectionViewDelegateFlo
     }
     
     lazy var collectionHeader: TabViewController? = nil
-    var pageViewController: TabViewPage?
+    var pageViewController: UIPageViewController?
     private var model: TabModel?
     private var building: Building = .viewController
     weak var delegate: TabViewControllerDelegate?
@@ -134,9 +130,9 @@ class TabViewController: UICollectionViewController, UICollectionViewDelegateFlo
             if indexPath.row < model.items.count {
                 collectionView.scrollToItem(at: indexPath, at: .left, animated: true)
                 
-                guard let currentIndexPage: Int = pageViewController?.currentIndexPage,
+                guard let currentIndexPage: Int = (pageViewController?.viewControllers?.first as? TabController)?.tabIndex,
                     indexPath.row != currentIndexPage else {
-                        return
+                    return
                 }
                 
                 delegate.willSelectItem(collectionView: collectionView, from: currentIndexPage, to: indexPath.row)
@@ -147,8 +143,6 @@ class TabViewController: UICollectionViewController, UICollectionViewDelegateFlo
                                                        direction: direction,
                                                        animated: true,
                                                        completion: { (result) in
-                                                        self.pageViewController?.currentIndexPage = indexPath.row
-                                                        
                                                         delegate.didSelectItem(collectionView: collectionView, from: currentIndexPage, to: indexPath.row)
                 })
             }
