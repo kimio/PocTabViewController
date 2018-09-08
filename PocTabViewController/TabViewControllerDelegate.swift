@@ -10,7 +10,6 @@ import Foundation
 import UIKit
 
 protocol TabViewControllerDelegate: class {
-    
-    func didSelectItem(collectionView: UICollectionView, from: Int, to: Int)
-    func willSelectItem(collectionView: UICollectionView, from: Int, to: Int)
+    func didSelectItem(tabModel: TabModel, from: Int, to: Int)
+    func willSelectItem(tabModel: TabModel, from: Int, to: Int)
 }

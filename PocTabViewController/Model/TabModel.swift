@@ -27,8 +27,15 @@ protocol TabItemModel: CollectionItem {
 }
 
 struct TabModel {
-    var items: [TabItemModel]
-    var tabLayout: TabHeaderFlowLayout
+    var items: [TabItemModel] = []
+    var tabLayout: TabHeaderFlowLayout = TabHeaderFlowLayout()
+    
+    init() { }
+    
+    init(items: [TabItemModel], tabLayout: TabHeaderFlowLayout) {
+        self.items = items
+        self.tabLayout = tabLayout
+    }
 }
 
 struct UserTabItemModel: TabItemModel {

@@ -13,21 +13,16 @@ class TabHeaderLayout: TabHeaderFlowLayout {
     
     override init() {
         super.init()
-        headerReferenceSize.height = 40
-        sectionHeadersPinToVisibleBounds = true
-        scrollDirection = .horizontal
+        headerReferenceSize.height = 100
+        sectionHeadersPinToVisibleBounds = false
         minimumLineSpacing = 0
         minimumInteritemSpacing = 0
         transitionStyle = .scroll
-        backgroundHeaderColor = #colorLiteral(red: 0.9372549057, green: 0.3490196168, blue: 0.1921568662, alpha: 1)
-        backgroundColorViewController = #colorLiteral(red: 0.9568627477, green: 0.6588235497, blue: 0.5450980663, alpha: 1)
+        backgroundHeaderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
+        backgroundColorViewController = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
     }
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-    }
-    
-    override func itemSize(frame: CGRect) {
-        itemSize = CGSize(width: frame.width, height: headerReferenceSize.height)
     }
 }

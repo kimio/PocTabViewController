@@ -15,10 +15,10 @@ protocol TabViewCellDelegate: class {
 
 class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    private var tabViewModel: TabModel?
+    private var tabViewModel: TabModel = TabModel()
     weak var delegate: TabViewCellDelegate?
     
-    func setupView(collectionViewController: TabViewController, tabModel: TabModel, indexPath: IndexPath, building: TabViewController.Building) {
+    func setupView(tabViewController: TabViewController, tabModel: TabModel, indexPath: IndexPath, building: TabViewController.Building, initialIndex: Int) {
         if tabModel.items.count < indexPath.row {
             return
         }
@@ -27,8 +27,8 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
         case .tabs:
             createHeaderView(itemModel: itemModel)
         case .viewController:
-            delegate = collectionViewController
-            createViewController(collectionViewController: collectionViewController, itemModel: itemModel, tabModel: tabModel)
+            delegate = tabViewController
+            createViewController(tabViewController: tabViewController, itemModel: itemModel, tabModel: tabModel, initialIndex: initialIndex)
         }
     }
     
@@ -37,76 +37,78 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
         addSubview(itemModel.tabView)
     }
     
-    private func createViewController(collectionViewController: TabViewController, itemModel: TabItemModel, tabModel: TabModel) {
+    private func createViewController(tabViewController: TabViewController, itemModel: TabItemModel, tabModel: TabModel, initialIndex: Int) {
         
         var tabItems: [TabItemModel] = tabModel.items
         for index in 0..<tabItems.count {
             tabItems[index].tabViewController.tabIndex = index
         }
-        
-        if  let firstItem = tabModel.items.first {
-            tabViewModel = tabModel
-            collectionViewController.pageViewController = UIPageViewController(transitionStyle: tabModel.tabLayout.transitionStyle, navigationOrientation: .horizontal, options: nil)
-            guard let pageViewController: UIPageViewController = collectionViewController.pageViewController else {
-                return
-            }
-            pageViewController.delegate = self
-            pageViewController.setViewControllers([firstItem.tabViewController], direction: .forward, animated: false, completion: {done in })
-            
-            pageViewController.dataSource = self
-            
-            collectionViewController.addChildViewController(pageViewController)
-            addSubview(pageViewController.view)
-            pageViewController.didMove(toParentViewController: collectionViewController)
+        var index: Int = 0
+        if  initialIndex < tabModel.items.count,
+            initialIndex > -1 {
+            index = initialIndex
         }
+        let viewController = tabModel.items[index].tabViewController
+        tabViewModel = tabModel
+        tabViewController.pageViewController = UIPageViewController(transitionStyle: tabModel.tabLayout.transitionStyle, navigationOrientation: .horizontal, options: nil)
+        guard let pageViewController: UIPageViewController = tabViewController.pageViewController else {
+            return
+        }
+        pageViewController.delegate = self
+        pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
+        
+        pageViewController.dataSource = self
+        
+        tabViewController.addChildViewController(pageViewController)
+        addSubview(pageViewController.view)
+        pageViewController.didMove(toParentViewController: tabViewController)
     }
     
     private func indexOfViewController(_ viewController: TabController) -> Int {
         return viewController.tabIndex
     }
     
-    private func transitionPageViewController(_ pageViewController: UIPageViewController, fromViewControllers: [UIViewController], toViewControllers: [UIViewController]) -> (collectionView: UICollectionView, delegate: TabViewControllerDelegate, from: Int, to: Int)? {
+    private func transitionPageViewController(_ pageViewController: UIPageViewController, fromViewControllers: [UIViewController], toViewControllers: [UIViewController], transition: (UICollectionView, TabViewControllerDelegate, Int, Int) -> Void) {
         
-        guard let parentTabController = (pageViewController.parent as? TabViewController),
+        if let parentTabController = (pageViewController.parent as? TabViewController),
             let delegate = parentTabController.delegate,
-            let collectionView = parentTabController.collectionHeader?.collectionView else {
-                return nil
+            let collectionView = parentTabController.collectionHeader?.collectionView {
+            
+            let from: Int = (fromViewControllers.first as! TabController).tabIndex
+            let to: Int = (toViewControllers.first as! TabController).tabIndex
+            
+            transition(collectionView, delegate, from, to)
         }
-        let from: Int = (fromViewControllers.first as! TabController).tabIndex
-        let to: Int = (toViewControllers.first as! TabController).tabIndex
-        
-        return (collectionView: collectionView, delegate: delegate, from: from, to: to)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
         
-        if let fromViewControllers = pageViewController.viewControllers,
-            let (collectionView, delegate, from, to) = transitionPageViewController(pageViewController, fromViewControllers: fromViewControllers, toViewControllers: pendingViewControllers) {
-            delegate.willSelectItem(collectionView: collectionView, from: from, to: to)
+        if let fromViewControllers = pageViewController.viewControllers {
+            transitionPageViewController(pageViewController, fromViewControllers: fromViewControllers, toViewControllers: pendingViewControllers, transition: { (collectionView, delegate, from, to) in
+                delegate.willSelectItem(tabModel: tabViewModel, from: from, to: to)
+            })
         }
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         
-        guard let internalDelegate = delegate else {
-            return
-        }
-        
-        if let toViewControllers = pageViewController.viewControllers,
-            let (collectionView, delegate, from, to) = transitionPageViewController(pageViewController, fromViewControllers: previousViewControllers, toViewControllers: toViewControllers) {
-            internalDelegate.selectIndexTab(from: from, to: to)
-            delegate.didSelectItem(collectionView: collectionView, from: from, to: to)
+        if let internalDelegate = delegate,
+            let toViewControllers = pageViewController.viewControllers {
+            transitionPageViewController(pageViewController, fromViewControllers: previousViewControllers, toViewControllers: toViewControllers, transition: { (collectionView, delegate, from, to) in
+                internalDelegate.selectIndexTab(from: from, to: to)
+                delegate.didSelectItem(tabModel: tabViewModel, from: from, to: to)
+            })
         }
     }
     
     private func viewControllerOfIndex(_ pageViewController: UIPageViewController, _ index: Int) -> UIViewController? {
-        guard let tabViewModel: TabModel = tabViewModel,
-            tabViewModel.items.count > index,
+        guard tabViewModel.items.count > index,
             index > -1 else {
                 return nil
         }
         return tabViewModel.items[index].tabViewController
     }
+    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         let index: Int = indexOfViewController(viewController as! TabController)
         return viewControllerOfIndex(pageViewController, index - 1)
