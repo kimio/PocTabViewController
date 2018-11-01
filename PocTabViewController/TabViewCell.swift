@@ -15,7 +15,7 @@ protocol TabViewCellDelegate: class {
 
 class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
-    private var tabViewModel: TabModel = TabModel()
+    private var tabModel: TabModel = TabModel()
     weak var delegate: TabViewCellDelegate?
     
     func setupView(tabViewController: TabViewController, tabModel: TabModel, indexPath: IndexPath, building: TabViewController.Building, initialIndex: Int) {
@@ -38,34 +38,24 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
     }
     
     private func createViewController(tabViewController: TabViewController, itemModel: TabItemModel, tabModel: TabModel, initialIndex: Int) {
-        
-        var tabItems: [TabItemModel] = tabModel.items
-        for index in 0..<tabItems.count {
-            tabItems[index].tabViewController.tabIndex = index
-        }
+        self.tabModel = tabModel
         var index: Int = 0
         if  initialIndex < tabModel.items.count,
             initialIndex > -1 {
             index = initialIndex
         }
-        let viewController = tabModel.items[index].tabViewController
-        tabViewModel = tabModel
+        let viewController: UIViewController = tabModel.items[index].tabViewController
         tabViewController.pageViewController = UIPageViewController(transitionStyle: tabModel.tabLayout.transitionStyle, navigationOrientation: .horizontal, options: nil)
         guard let pageViewController: UIPageViewController = tabViewController.pageViewController else {
             return
         }
         pageViewController.delegate = self
         pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
-        
         pageViewController.dataSource = self
         
         tabViewController.addChildViewController(pageViewController)
         addSubview(pageViewController.view)
         pageViewController.didMove(toParentViewController: tabViewController)
-    }
-    
-    private func indexOfViewController(_ viewController: TabController) -> Int {
-        return viewController.tabIndex
     }
     
     private func transitionPageViewController(_ pageViewController: UIPageViewController, fromViewControllers: [UIViewController], toViewControllers: [UIViewController], transition: (UICollectionView, TabViewControllerDelegate, Int, Int) -> Void) {
@@ -74,9 +64,8 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
             let delegate = parentTabController.delegate,
             let collectionView = parentTabController.collectionHeader?.collectionView {
             
-            let from: Int = (fromViewControllers.first as! TabController).tabIndex
-            let to: Int = (toViewControllers.first as! TabController).tabIndex
-            
+            let from: Int = tabModel.indexItemOf(fromViewControllers.first)
+            let to: Int = tabModel.indexItemOf(toViewControllers.first)
             transition(collectionView, delegate, from, to)
         }
     }
@@ -85,7 +74,7 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
         
         if let fromViewControllers = pageViewController.viewControllers {
             transitionPageViewController(pageViewController, fromViewControllers: fromViewControllers, toViewControllers: pendingViewControllers, transition: { (collectionView, delegate, from, to) in
-                delegate.willSelectItem(tabModel: tabViewModel, from: from, to: to)
+                delegate.willSelectItem(tabModel: tabModel, from: from, to: to)
             })
         }
     }
@@ -96,27 +85,25 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
             let toViewControllers = pageViewController.viewControllers {
             transitionPageViewController(pageViewController, fromViewControllers: previousViewControllers, toViewControllers: toViewControllers, transition: { (collectionView, delegate, from, to) in
                 internalDelegate.selectIndexTab(from: from, to: to)
-                delegate.didSelectItem(tabModel: tabViewModel, from: from, to: to)
+                delegate.didSelectItem(tabModel: tabModel, from: from, to: to)
             })
         }
     }
     
     private func viewControllerOfIndex(_ pageViewController: UIPageViewController, _ index: Int) -> UIViewController? {
-        guard tabViewModel.items.count > index,
+        guard tabModel.items.count > index,
             index > -1 else {
                 return nil
         }
-        return tabViewModel.items[index].tabViewController
+        return tabModel.items[index].tabViewController
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        let index: Int = indexOfViewController(viewController as! TabController)
-        return viewControllerOfIndex(pageViewController, index - 1)
+        return viewControllerOfIndex(pageViewController, tabModel.indexItemOf(viewController) - 1)
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        let index: Int = indexOfViewController(viewController as! TabController)
-        return viewControllerOfIndex(pageViewController, index + 1)
+        return viewControllerOfIndex(pageViewController, tabModel.indexItemOf(viewController) + 1)
     }
     
     override init(frame: CGRect) {

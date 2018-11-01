@@ -156,12 +156,12 @@ class TabViewController: UICollectionViewController {
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if building == .tabs, let delegate = delegate, indexPath.row < model.items.count {
                 collectionView.scrollToItem(at: indexPath, at: .left, animated: true)
-                
-            guard let currentIndexPage: Int = (pageViewController?.viewControllers?.first as? TabController)?.tabIndex,
-                indexPath.row != currentIndexPage else {
+            
+            guard let tabViewController: UIViewController = pageViewController?.viewControllers?.first,
+                indexPath.row != model.indexItemOf(tabViewController) else {
                 return
             }
-            
+            let currentIndexPage: Int = model.indexItemOf(tabViewController)
             let direction: UIPageViewControllerNavigationDirection = indexPath.row > currentIndexPage ? .forward : .reverse
             let viewController: UIViewController = model.items[indexPath.row].tabViewController
             

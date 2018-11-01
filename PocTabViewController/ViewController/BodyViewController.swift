@@ -8,7 +8,7 @@
 
 import UIKit
 
-class BodyViewController: TabController {
+class BodyViewController: UIViewController {
     var label: UILabel = UILabel()
     
     override func viewDidLoad() {
@@ -28,6 +28,5 @@ class BodyViewController: TabController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
     }
 }
