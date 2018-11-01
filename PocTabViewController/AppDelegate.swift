@@ -81,7 +81,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, TabViewControllerDelegate
                              size: (percentage: 1, fixed: nil))
         ]
         
-        let tabModel = TabModel(items: items, tabLayout: TabHeaderLayout())
+        let tabModel = TabModel(items: items, headerLayout: TabHeaderLayout(), controllerLayout: TabControllerLayout())
         let tabViewController = TabViewController(model: tabModel, initialIndex: 1)
         tabViewController.delegate = self
         window?.rootViewController = UINavigationController(rootViewController: tabViewController)

@@ -14,12 +14,10 @@ class TabHeaderLayout: TabHeaderFlowLayout {
     override init() {
         super.init()
         headerReferenceSize.height = 100
-        sectionHeadersPinToVisibleBounds = false
+        sectionHeadersPinToVisibleBounds = true
         minimumLineSpacing = 0
         minimumInteritemSpacing = 0
-        transitionStyle = .scroll
-        backgroundHeaderColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
-        backgroundColorViewController = #colorLiteral(red: 0.501960814, green: 0.501960814, blue: 0.501960814, alpha: 1)
+        backgroundColor = #colorLiteral(red: 0.2549019754, green: 0.2745098174, blue: 0.3019607961, alpha: 1)
     }
     
     required init?(coder aDecoder: NSCoder) {

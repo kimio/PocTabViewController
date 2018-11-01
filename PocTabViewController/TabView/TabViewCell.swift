@@ -45,10 +45,15 @@ class TabViewCell: UICollectionViewCell, UIPageViewControllerDataSource, UIPageV
             index = initialIndex
         }
         let viewController: UIViewController = tabModel.items[index].tabViewController
-        tabViewController.pageViewController = UIPageViewController(transitionStyle: tabModel.tabLayout.transitionStyle, navigationOrientation: .horizontal, options: nil)
+        tabViewController.pageViewController = UIPageViewController(transitionStyle: tabModel.controllerLayout.transitionStyle, navigationOrientation: .horizontal, options: nil)
         guard let pageViewController: UIPageViewController = tabViewController.pageViewController else {
             return
         }
+        let frame: CGRect = pageViewController.view.frame
+        pageViewController.view.frame = CGRect(x: frame.origin.x,
+                                               y: frame.origin.y,
+                                               width: tabModel.controllerLayout.itemSize.width,
+                                               height: tabModel.controllerLayout.itemSize.height)
         pageViewController.delegate = self
         pageViewController.setViewControllers([viewController], direction: .forward, animated: false, completion: nil)
         pageViewController.dataSource = self

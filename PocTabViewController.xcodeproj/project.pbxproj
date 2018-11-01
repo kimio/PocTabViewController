@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6C2A6434218B7CA000D501A3 /* TabControllerLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2A6433218B7CA000D501A3 /* TabControllerLayout.swift */; };
+		6C2A6438218B7F8F00D501A3 /* UserTabItemModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6C2A6437218B7F8F00D501A3 /* UserTabItemModel.swift */; };
+		6C2A643B218B806600D501A3 /* TabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D32213DCC3A00C18401 /* TabModel.swift */; };
 		6CDF9D1D213DC6AA00C18401 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D1C213DC6AA00C18401 /* AppDelegate.swift */; };
 		6CDF9D1F213DC6AA00C18401 /* TabViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D1E213DC6AA00C18401 /* TabViewController.swift */; };
 		6CDF9D24213DC6AB00C18401 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6CDF9D23213DC6AB00C18401 /* Assets.xcassets */; };
 		6CDF9D27213DC6AB00C18401 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6CDF9D25213DC6AB00C18401 /* LaunchScreen.storyboard */; };
 		6CDF9D30213DCAEE00C18401 /* TabViewControllerFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D2F213DCAEE00C18401 /* TabViewControllerFlowLayout.swift */; };
-		6CDF9D33213DCC3A00C18401 /* TabModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D32213DCC3A00C18401 /* TabModel.swift */; };
 		6CDF9D36213F011F00C18401 /* UICollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D35213F011F00C18401 /* UICollectionViewFlowLayout.swift */; };
 		6CDF9D3C21401B7800C18401 /* TabViewControllerDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D3B21401B7800C18401 /* TabViewControllerDelegate.swift */; };
 		6CDF9D3F2140248000C18401 /* BodyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CDF9D3E2140248000C18401 /* BodyViewController.swift */; };
@@ -22,6 +24,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6C2A6433218B7CA000D501A3 /* TabControllerLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabControllerLayout.swift; sourceTree = "<group>"; };
+		6C2A6437218B7F8F00D501A3 /* UserTabItemModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserTabItemModel.swift; sourceTree = "<group>"; };
 		6CDF9D19213DC6AA00C18401 /* PocTabViewController.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PocTabViewController.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6CDF9D1C213DC6AA00C18401 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6CDF9D1E213DC6AA00C18401 /* TabViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabViewController.swift; sourceTree = "<group>"; };
@@ -49,6 +53,47 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6C2A6435218B7F6200D501A3 /* Example */ = {
+			isa = PBXGroup;
+			children = (
+				6C2A6439218B7FB300D501A3 /* Layout */,
+				6C2A6436218B7F8300D501A3 /* Model */,
+				6CDF9D3D2140246600C18401 /* ViewController */,
+				6CDF9D442141C2A800C18401 /* View */,
+			);
+			path = Example;
+			sourceTree = "<group>";
+		};
+		6C2A6436218B7F8300D501A3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				6C2A6437218B7F8F00D501A3 /* UserTabItemModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		6C2A6439218B7FB300D501A3 /* Layout */ = {
+			isa = PBXGroup;
+			children = (
+				6CDF9D422141B72600C18401 /* TabHeaderLayout.swift */,
+				6C2A6433218B7CA000D501A3 /* TabControllerLayout.swift */,
+			);
+			path = Layout;
+			sourceTree = "<group>";
+		};
+		6C2A643A218B7FE700D501A3 /* TabView */ = {
+			isa = PBXGroup;
+			children = (
+				6CDF9D34213F011500C18401 /* Extension */,
+				6CDF9D31213DCC3000C18401 /* Model */,
+				6CDF9D2E213DCAD800C18401 /* Layout */,
+				6CDF9D1E213DC6AA00C18401 /* TabViewController.swift */,
+				6CDF9D402141B5D700C18401 /* TabViewCell.swift */,
+				6CDF9D3B21401B7800C18401 /* TabViewControllerDelegate.swift */,
+			);
+			path = TabView;
+			sourceTree = "<group>";
+		};
 		6CDF9D10213DC6AA00C18401 = {
 			isa = PBXGroup;
 			children = (
@@ -68,15 +113,9 @@
 		6CDF9D1B213DC6AA00C18401 /* PocTabViewController */ = {
 			isa = PBXGroup;
 			children = (
-				6CDF9D442141C2A800C18401 /* View */,
-				6CDF9D3D2140246600C18401 /* ViewController */,
-				6CDF9D34213F011500C18401 /* Extension */,
-				6CDF9D31213DCC3000C18401 /* Model */,
-				6CDF9D2E213DCAD800C18401 /* Layout */,
+				6C2A643A218B7FE700D501A3 /* TabView */,
+				6C2A6435218B7F6200D501A3 /* Example */,
 				6CDF9D1C213DC6AA00C18401 /* AppDelegate.swift */,
-				6CDF9D402141B5D700C18401 /* TabViewCell.swift */,
-				6CDF9D1E213DC6AA00C18401 /* TabViewController.swift */,
-				6CDF9D3B21401B7800C18401 /* TabViewControllerDelegate.swift */,
 				6CDF9D23213DC6AB00C18401 /* Assets.xcassets */,
 				6CDF9D25213DC6AB00C18401 /* LaunchScreen.storyboard */,
 				6CDF9D28213DC6AB00C18401 /* Info.plist */,
@@ -88,7 +127,6 @@
 			isa = PBXGroup;
 			children = (
 				6CDF9D2F213DCAEE00C18401 /* TabViewControllerFlowLayout.swift */,
-				6CDF9D422141B72600C18401 /* TabHeaderLayout.swift */,
 			);
 			path = Layout;
 			sourceTree = "<group>";
@@ -195,16 +233,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6C2A643B218B806600D501A3 /* TabModel.swift in Sources */,
 				6CDF9D1F213DC6AA00C18401 /* TabViewController.swift in Sources */,
 				6CDF9D3C21401B7800C18401 /* TabViewControllerDelegate.swift in Sources */,
 				6CDF9D432141B72600C18401 /* TabHeaderLayout.swift in Sources */,
-				6CDF9D33213DCC3A00C18401 /* TabModel.swift in Sources */,
 				6CDF9D36213F011F00C18401 /* UICollectionViewFlowLayout.swift in Sources */,
 				6CDF9D1D213DC6AA00C18401 /* AppDelegate.swift in Sources */,
 				6CDF9D3F2140248000C18401 /* BodyViewController.swift in Sources */,
 				6CDF9D462141C2B300C18401 /* Tab.swift in Sources */,
 				6CDF9D412141B5D700C18401 /* TabViewCell.swift in Sources */,
+				6C2A6434218B7CA000D501A3 /* TabControllerLayout.swift in Sources */,
 				6CDF9D30213DCAEE00C18401 /* TabViewControllerFlowLayout.swift in Sources */,
+				6C2A6438218B7F8F00D501A3 /* UserTabItemModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -22,15 +22,19 @@ protocol TabItemModel: CollectionItem {
     var tabViewController: UIViewController { get set }
 }
 
-struct TabModel {
+public struct TabModel {
     var items: [TabItemModel] = []
-    var tabLayout: TabHeaderFlowLayout = TabHeaderFlowLayout()
+    var headerLayout: TabHeaderFlowLayout = TabHeaderFlowLayout()
+    var controllerLayout: TabViewControllerFlowLayout = TabViewControllerFlowLayout()
     
     init() { }
     
-    init(items: [TabItemModel], tabLayout: TabHeaderFlowLayout) {
+    init(items: [TabItemModel],
+         headerLayout: TabHeaderFlowLayout = TabHeaderFlowLayout(),
+         controllerLayout: TabViewControllerFlowLayout = TabViewControllerFlowLayout()) {
         self.items = items
-        self.tabLayout = tabLayout
+        self.headerLayout = headerLayout
+        self.controllerLayout = controllerLayout
     }
     
     func indexItemOf(_ viewController: UIViewController?) -> Int {
@@ -38,10 +42,4 @@ struct TabModel {
             return itemModel.tabViewController == viewController
             } ?? 0
     }
-}
-
-struct UserTabItemModel: TabItemModel {
-    var tabView: UIView
-    var tabViewController: UIViewController
-    var size: (percentage: CGFloat?, fixed: CGSize?)?
 }

@@ -28,7 +28,7 @@ class TabViewHeader: UICollectionReusableView {
         
         collectionViewController.addChildViewController(controller)
         
-        controller.collectionView?.backgroundColor = tabModel.tabLayout.backgroundHeaderColor
+        controller.collectionView?.backgroundColor = tabModel.headerLayout.backgroundColor
         controller.delegate = delegate
         controller.didMove(toParentViewController: collectionViewController)
         addSubview(controller.view)
@@ -104,17 +104,16 @@ class TabViewController: UICollectionViewController {
     weak var delegate: TabViewControllerDelegate?
     
     init(model: TabModel, initialIndex: Int = 0) {
-        let tabFlowLayout: TabViewControllerFlowLayout = TabViewControllerFlowLayout()
-        tabFlowLayout.update(tabLayout: model.tabLayout)
-        super.init(collectionViewLayout: tabFlowLayout)
-        collectionView?.backgroundColor = model.tabLayout.backgroundColorViewController
+        model.controllerLayout.update(tabLayout: model.headerLayout)
+        super.init(collectionViewLayout: model.controllerLayout)
+        collectionView?.backgroundColor = model.controllerLayout.backgroundColor
         self.model = model
         self.initialIndex = initialIndex
         registerTabViewHeader()
     }
     
     fileprivate init(headerWith model: TabModel, initialIndex: Int, collectionViewController: TabViewController) {
-        super.init(collectionViewLayout: model.tabLayout)
+        super.init(collectionViewLayout: model.headerLayout)
         building = .tabs
         self.initialIndex = initialIndex
         self.model = model

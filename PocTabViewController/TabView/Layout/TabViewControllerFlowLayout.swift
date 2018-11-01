@@ -10,8 +10,9 @@ import Foundation
 import UIKit
 
 class TabViewControllerFlowLayout: UICollectionViewFlowLayout {
-    
-    var navigationHeight: CGFloat = 0
+    var backgroundColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+    var navigationHeight: CGFloat = 64
+    var transitionStyle: UIPageViewControllerTransitionStyle = .scroll
     
     override init() {
         super.init()
@@ -21,7 +22,6 @@ class TabViewControllerFlowLayout: UICollectionViewFlowLayout {
         if let tabLayout = tabLayout {
             headerReferenceSize.height = tabLayout.headerReferenceSize.height
             sectionHeadersPinToVisibleBounds = tabLayout.sectionHeadersPinToVisibleBounds
-            navigationHeight = tabLayout.navigationHeight
         }
     }
     
@@ -36,10 +36,7 @@ class TabViewControllerFlowLayout: UICollectionViewFlowLayout {
 }
 
 class TabHeaderFlowLayout: UICollectionViewFlowLayout {
-    var backgroundHeaderColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var backgroundColorViewController: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
-    var navigationHeight: CGFloat = 64
-    var transitionStyle: UIPageViewControllerTransitionStyle = .scroll
+    var backgroundColor: UIColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
     
     override init() {
         super.init()    

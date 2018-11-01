@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol TabViewControllerDelegate: class {
+public protocol TabViewControllerDelegate: class {
     func didSelectItem(tabModel: TabModel, from: Int, to: Int)
     func willSelectItem(tabModel: TabModel, from: Int, to: Int)
 }
